@@ -38,7 +38,7 @@ class BaseClassifier:
         self.wandb_use = self.check_wandb_use()
         self.best_accuracy = 0.0
         self.save_every = math.ceil(self.args.epochs / 10)
-        self.input_res = (3, 256, 256)
+        self.input_res = (3, 224, 224)
 
         # 조기 종료 파라미터
         
@@ -228,9 +228,12 @@ class BaseClassifier:
             
             for inputs, masks, labels in self.train_loader:
                 self.optimizer.zero_grad()
-                inputs = inputs.to(self.device, non_blocking=True)
+                # inputs = inputs.to(self.device, non_blocking=True)
+                inputs = inputs.to(self.device, non_blocking=True)[:, :2, :, :] # for image(2) + mask(1)
+                masks = masks.to(self.device, non_blocking=True)
                 labels = labels.to(self.device, non_blocking=True).float()
-                outputs = self.model(inputs)
+                # outputs = self.model(inputs) # for image + mask 
+                outputs = self.model(torch.concat([inputs, masks], dim=1)) # for image + mask 
                 
                 if self.args.outlayer_num > 1:
                     _, predicted = torch.max(outputs.data, 1)
@@ -287,10 +290,14 @@ class BaseClassifier:
 
         with torch.no_grad():
             for inputs, masks, labels in self.val_loader:
-                inputs = inputs.to(self.device, non_blocking=True)
+                # inputs = inputs.to(self.device, non_blocking=True)
+                inputs = inputs.to(self.device, non_blocking=True)[:, :2, :, :] # for image(2) + mask(1)
                 labels = labels.to(self.device, non_blocking=True).float()
+                masks = masks.to(self.device, non_blocking=True) # for image+mask
 
-                outputs = self.model(inputs)
+                # outputs = self.model(inputs) # for image 
+                outputs = self.model(torch.concat([inputs, masks], dim=1)) # for image + mask 
+                
                 if self.args.outlayer_num > 1:
                     probs = torch.softmax(outputs, dim=1)
                     _, predicted = torch.max(outputs.data, 1)

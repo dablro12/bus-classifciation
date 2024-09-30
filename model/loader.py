@@ -3,7 +3,7 @@ import importlib
 
 MODEL_LIST = [
     "alexnet", "convnext", "dynamic-vit", "inception", "mobilenet", "resnet", "vgg",
-    "densenet", "efficient", "ocys-net", "swin-transformer", "yolo", "vision-transformer",
+    "densenet", "efficient", "ocys-net", "swin-transformer", "yolo", "vision-transformer", 'maxvit'
 ]
 
 def model_Loader(model_name: str, outlayer_num: int, type: str):

@@ -128,6 +128,8 @@ class JointTransform:
             image = transforms.functional.resize(image, self.resize, interpolation=self.interpolation)
             mask = transforms.functional.resize(mask, self.resize, interpolation=self.interpolation)
         
+        # image는 2channel로 적용
+        
         # To Tensor
         image = transforms.ToTensor()(image)
         mask = transforms.ToTensor()(mask)
