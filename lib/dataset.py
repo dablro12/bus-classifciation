@@ -70,7 +70,8 @@ class Custom_bus_dataset(Dataset):
         
         for idx, row in self.df.iterrows():
             self.image_paths.append(os.path.join(root_dir, row['source'], 'dataset', f'{row["ID"]}.png'))
-            self.mask_paths.append(os.path.join(root_dir, row['source'], 'mask', f'{row["ID"]}.png'))
+            # self.mask_paths.append(os.path.join(root_dir, row['source'], 'mask', f'{row["ID"]}.png')) # for oirignal mask
+            self.mask_paths.append(os.path.join(root_dir, row['source'], 'mask-sam', f'{row["ID"]}.png')) #for sam mask
             self.labels.append(self.label_map[row['label']])  # Encode 'benign' as 0, 'malignant' as 1
     
     def get_labels(self):
