@@ -104,7 +104,7 @@ def main():
     checkpoint_root_dir = '/mnt/hdd/octc/BACKUP/BreastUS/experiment/checkpoint'
     save_metric_dir = '/mnt/hdd/octc/BACKUP/BreastUS/experiment/metrics'
     fold_num = 5
-    seed = 627
+    seed = 42
     outlayer_num = 1
 
 
